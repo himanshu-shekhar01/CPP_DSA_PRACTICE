@@ -1,0 +1,149 @@
+
+#include <iostream>
+using namespace std;
+
+class Node{
+    public:
+    int data;
+    Node* next;
+    Node(int x){
+        data = x;
+        next = NULL;
+    }
+};
+
+void removeLoop(Node* head){
+    Node* slow = head;
+    Node* fast = head;
+    bool loopExists = false;
+    while(fast&&fast->next){
+        slow = slow->next;
+        fast = fast->next->next;
+        if(slow==fast){
+            loopExists = true;
+            break;
+        }
+    }
+    if(!loopExists) return;
+    
+    // count no of nodes in cycle for remove cycle
+    int k = 1;
+    Node* temp = slow;
+    while(temp->next!=slow){
+        k++;
+        temp = temp->next;
+    }
+    
+    Node* ptr1 = head;
+    Node* ptr2 = head;
+    for(int i=0;i<k;i++){
+        ptr2 = ptr2->next;
+    }
+    
+    while(ptr1!=ptr2){
+        ptr1 = ptr1->next;
+        ptr2 = ptr2->next;
+    }
+    
+     // ptr1 is start of loop
+    Node* last = ptr1;
+    while(last->next != ptr1) {
+        last = last->next;
+    }
+    last->next = NULL;
+}
+
+void printList(Node* head) {
+    while(head) {
+        cout << head->data << " ";
+        head = head->next;
+    }
+}
+
+int main() {
+    Node* head = new Node(1);
+    head->next = new Node(2);
+    head->next->next = new Node(3);
+    head->next->next->next = new Node(4);
+    head->next->next->next->next = new Node(5);
+
+    // Create loop: 5 -> 3
+    head->next->next->next->next->next = head->next->next;
+
+    removeLoop(head);
+
+    printList(head);
+
+    return 0;
+}
+
+//for understanding what happens after count of nodes in cycle 
+/*
+Example
+
+Suppose the list is:
+
+1 → 2 → 3 → 4 → 5 → 6
+          ↑       ↓
+          ← ← ← ←
+
+Cycle starts at node 3.
+
+Cycle length k = 4 (3 → 4 → 5 → 6 → 3).
+
+Step 1: Place two pointers at head
+ptr1 = head; // 1
+ptr2 = head; // 1
+Step 2: Move ptr2 ahead by k nodes
+
+Move ptr2 4 steps:
+ptr1 = 1
+
+ptr2:
+1 → 2 (1 step)
+2 → 3 (2 steps)
+3 → 4 (3 steps)
+4 → 5 (4 steps)
+
+ptr2 = 5
+
+Current state:
+
+ptr1 = 1
+ptr2 = 5
+
+Step 3: Move both one step at a time
+Iteration 1
+ptr1: 1 → 2
+ptr2: 5 → 6
+Iteration 2
+ptr1: 2 → 3
+ptr2: 6 → 3
+
+Now:
+
+ptr1 == ptr2 == 3
+
+They meet at the start of the cycle.
+
+Code
+Node* ptr1 = head;
+Node* ptr2 = head;
+
+// move ptr2 k nodes ahead
+for(int i = 0; i < k; i++) {
+    ptr2 = ptr2->next;
+}
+
+// move both together
+while(ptr1 != ptr2) {
+    ptr1 = ptr1->next;
+    ptr2 = ptr2->next;
+}
+
+// start of cycle
+cout << ptr1->data;
+Trick to Remember
+
+Count cycle length k → Keep one pointer at head → Move another pointer k nodes ahead → Move both together → Meeting point = start of cycle.
+*/
