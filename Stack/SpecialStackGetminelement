@@ -54,7 +54,9 @@ int main() {
     sp.push(40);
     sp.push(50);
     
+
     cout<<sp.getMin();
+    cout<<sp.peek();
     
     
 }
