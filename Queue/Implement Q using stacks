@@ -29,6 +29,9 @@ public:
         s2.pop();
     }
 
+
+
+    
     // front
     int front() {
         if (s1.empty() && s2.empty()) {

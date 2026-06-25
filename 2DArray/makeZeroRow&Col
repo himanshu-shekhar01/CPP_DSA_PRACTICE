@@ -1,0 +1,90 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    vector<vector<int>> v = {
+        {1, 1, 1}, //row = 3, col = 3
+        {1, 0, 1},
+        {1, 1, 1}
+    };
+    
+    int row, col;
+    
+    for(int i=0;i<3;i++){
+        for(int j=0;j<3;j++){
+            if(v[i][j]==0){
+                row = i;
+                col = j;
+            }
+        }
+    }
+    
+    for(int i=0;i<3;i++){
+        for(int j=0;j<3;j++){
+            if(row==i || col==j){
+                v[i][j]=0;
+            }
+        }
+    }
+    
+    for(int i=0;i<3;i++){
+        for(int j=0;j<3;j++){
+            cout<<v[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+    
+}
+
+//this checks only one condition if we have another zero it goes to overrite and only that particular row and column become 0;
+
+//correct logic is store row and col with make 1 1d array for both row and col and marked 1 if zero find 
+// and then do 0 for whole column and row.
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    vector<vector<int>> v = {
+        {1, 1, 1},
+        {1, 0, 1},
+        {1, 1, 1}
+    };
+
+    int n = v.size();
+    int m = v[0].size();
+
+    vector<int> row(n, 0);
+    vector<int> col(m, 0);
+
+    // First pass: mark rows and columns containing 0
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < m; j++) {
+            if(v[i][j] == 0) {
+                row[i] = 1;
+                col[j] = 1;
+            }
+        }
+    }
+
+    // Second pass: make cells 0
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < m; j++) {
+            if(row[i] == 1 || col[j] == 1) {
+                v[i][j] = 0;
+            }
+        }
+    }
+
+    // Print matrix
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < m; j++) {
+            cout << v[i][j] << " ";
+        }
+        cout << endl;
+    }
+
+    return 0;
+}
