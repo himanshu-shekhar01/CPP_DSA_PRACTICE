@@ -1,0 +1,60 @@
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <iostream>
+#include <stack>
+using namespace std;
+
+class SpecialStack{
+    stack<int> st;
+    stack<int> minStack;
+    
+    public:
+    
+    void push(int val){
+        st.push(val);
+        
+        if(minStack.empty() || val<=minStack.top()){
+            minStack.push(val);
+        }else{
+            minStack.push(minStack.top());
+        }
+    }
+    
+    void pop(){
+        if(st.empty()){
+            return;
+        }
+        st.pop();
+        minStack.pop();
+    }
+    
+    int peek(){
+        if(st.empty()) return -1;
+        return st.top();
+    }
+    
+    int getMin(){
+        if(minStack.empty()) return -1;
+        
+        return minStack.top();
+    }
+};
+
+
+int main() {
+    SpecialStack sp;
+    sp.push(20);
+    sp.push(10);
+    sp.push(40);
+    sp.push(50);
+    
+    cout<<sp.getMin();
+    
+    
+}
