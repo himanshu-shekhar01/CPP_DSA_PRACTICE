@@ -1,0 +1,174 @@
+#include <iostream>
+#include <stack>
+#include <string>
+using namespace std;
+
+
+// Function to return precedence of an operator
+int prec(char c)
+{
+    // Highest precedence
+    if (c == '^')
+        return 3;
+
+    // Medium precedence
+    if (c == '*' || c == '/')
+        return 2;
+
+    // Lowest precedence
+    if (c == '+' || c == '-')
+        return 1;
+
+    // If character is not an operator
+    return -1;
+}
+
+
+// Function to convert Infix → Postfix
+string infixToPostfix(string s)
+{
+    stack<char> st;   // Stack stores operators
+    string res = "";  // This will store our postfix answer
+
+
+    // Read the infix expression from left to right
+    for (char c : s)
+    {
+        // ------------------------------------------------
+        // CASE 1: Operand
+        // ------------------------------------------------
+        // Example: a, b, c, 1, 2, 3
+        //
+        // Operands directly go into the result.
+        if (isalnum(c))
+        {
+            res += c;
+        }
+
+
+        // ------------------------------------------------
+        // CASE 2: Opening bracket '('
+        // ------------------------------------------------
+        // Simply push '(' into the stack.
+        else if (c == '(')
+        {
+            st.push(c);
+        }
+
+
+        // ------------------------------------------------
+        // CASE 3: Closing bracket ')'
+        // ------------------------------------------------
+        // Pop everything until '(' is found.
+        else if (c == ')')
+        {
+            while (!st.empty() && st.top() != '(')
+            {
+                res += st.top();
+                st.pop();
+            }
+
+            // Remove '(' from the stack.
+            // We don't put '(' into postfix.
+            if (!st.empty())
+                st.pop();
+        }
+
+
+        // ------------------------------------------------
+        // CASE 4: Operator
+        // ------------------------------------------------
+        // Operators: + - * / ^
+        else
+        {
+            /*
+                We have two possibilities:
+
+                1. Stack top has HIGHER precedence
+                   Example:
+                   
+                   Stack: *
+                   Current: +
+
+                   * must be processed first,
+                   so pop it.
+
+                2. Stack top has SAME precedence
+                   and current operator is NOT '^'.
+
+                   Example:
+
+                   Stack: +
+                   Current: +
+
+                   + and + have same precedence.
+                   + is left associative,
+                   so pop the old +.
+                   
+                   But for ^:
+
+                   Stack: ^
+                   Current: ^
+
+                   Don't pop because ^ is
+                   right associative.
+            */
+
+            while (!st.empty() &&
+                   st.top() != '(' &&
+                   (
+                       prec(st.top()) > prec(c)
+                       ||
+                       (
+                           prec(st.top()) == prec(c)
+                           && c != '^'
+                       )
+                   ))
+            {
+                // Move operator from stack to result
+                res += st.top();
+
+                // Remove operator from stack
+                st.pop();
+            }
+
+            // Finally push current operator
+            st.push(c);
+        }
+    }
+
+
+    // ------------------------------------------------
+    // STEP 5: Empty the remaining stack
+    // ------------------------------------------------
+    //
+    // Example:
+    //
+    // Stack: + *
+    //
+    // At the end, all operators must
+    // be moved to the postfix result.
+
+    while (!st.empty())
+    {
+        res += st.top();
+        st.pop();
+    }
+
+
+    return res;
+}
+
+
+int main()
+{
+    string s = "a*(b+c)/d";
+
+    cout << "Infix:   " << s << endl;
+
+    cout << "Postfix: "
+         << infixToPostfix(s)
+         << endl;
+
+    return 0;
+}
