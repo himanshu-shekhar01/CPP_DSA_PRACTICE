@@ -1,0 +1,61 @@
+Steps:
+1. Use divide and conquer Rule , if left index is greater than right then 
+2. find mid.
+3. again call merge(arr,left,mid); // for left array
+4. again call merge(arr,mid+1,right); //for right array
+5. merge both array
+6.  check: if st<=mid && mid+1<=end 
+                  if(arr[i]<arr[j]) then push_back into new array 
+and done. before it store i = start, and j = end;
+
+
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void merge(vector<int>& arr, int left, int mid, int right){
+    vector<int> temp;
+    int i=left, j=mid+1;
+    while(i<=mid && j<=right){
+        if(arr[i]<=arr[j]){
+            temp.push_back(arr[i]);
+            i++;
+        }else{
+            temp.push_back(arr[j]);
+            j++;
+        }
+    }
+    while(i<=mid){
+        temp.push_back(arr[i]);
+        i++;
+    }
+    
+    while(j<=right){
+        temp.push_back(arr[j]);
+        j++;
+    }
+    for(int idx = 0; idx<temp.size();idx++){
+        arr[idx+left] = temp[idx]; 
+    }
+}
+
+void mergeSort(vector<int>& arr, int left, int right){
+    if(left<right){
+        int mid = left+(right-left)/2;
+        mergeSort(arr,left,mid);
+        mergeSort(arr,mid+1,right);
+        
+        merge(arr,left,mid,right);
+    }
+}
+int main()
+{
+    vector<int> arr = {38, 27, 43, 10};
+    int n = arr.size();
+    mergeSort(arr, 0, n - 1);
+    for (int i = 0; i < arr.size(); i++)
+        cout << arr[i] << " ";
+    cout << endl;
+    return 0;
+}
