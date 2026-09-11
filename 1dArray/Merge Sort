@@ -8,7 +8,9 @@ Steps:
                   if(arr[i]<arr[j]) then push_back into new array 
 and done. before it store i = start, and j = end;
 
-
+T.C. = total calls* w.d. in each call
+     = log(n) * n;
+S.C. = O(n)
 
 #include <iostream>
 #include <vector>
