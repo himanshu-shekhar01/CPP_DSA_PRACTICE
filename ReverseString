@@ -1,0 +1,17 @@
+import java.io.*;
+
+class GFG{
+    public static void main(String[] args){
+        String str = "I love coding";
+        String[] words = str.trim().split("\\s+");
+
+        for(int i=words.length-1;i>=0;i--){
+            System.out.println(words[i]);
+        }
+
+
+    }
+}
+
+\\s+ is used for removing multiple spaces btw them and trim is used for trim.
+
