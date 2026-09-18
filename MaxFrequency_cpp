@@ -1,0 +1,23 @@
+#include <iostream>
+#include <unordered_map>
+using namespace std;
+
+int main(){
+int vector<int> v1 = {1,2,1,2,4,3,3,3,6,6,6,5,4};
+unordered_map<int,int> mp;
+
+//count frequency
+for(int x:arr){
+mp[x]++;
+}
+//find maxFrequency element
+int maxFrequency = 0;
+int maxElement = 0;
+for(int x: mp){
+if(x.second>maxFrequency){
+maxFrequency = x.second;
+maxElement = x.first;
+}
+}
+cout<<maxelement<<"->"<<maxfrequency;
+}
