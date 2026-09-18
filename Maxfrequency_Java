@@ -1,0 +1,14 @@
+String[] arr1 = {"Apple", "Banana", "Apple", "Mango"};
+        // Step 1: Create frequency map
+        HashMap<String, Integer> mp = new HashMap<>();
+        for (String x : arr1) {
+            mp.put(x, mp.getOrDefault(x, 0) + 1);
+        }
+        int maxFrequency = 0;
+        for(String key:mp.keySet()){
+            if(mp.get(key)>maxFrequency){
+                maxFrequency = mp.get(key);
+                System.out.println(maxFrequency);
+                System.out.println(key);
+            }
+        }
